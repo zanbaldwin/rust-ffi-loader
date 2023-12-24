@@ -1,0 +1,30 @@
+{
+    "name": "zanbaldwin/ffi-array-example",
+    "description": "Example Usage of zanbaldwin/rust-ffi-loader",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "ZanBaldwin\\FFI\\Example\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Zan Baldwin",
+            "email": "hello@zanbaldwin.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "zanbaldwin/rust-ffi-loader": "*"
+    }
+}
