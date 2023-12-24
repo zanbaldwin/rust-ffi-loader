@@ -1,0 +1,26 @@
+parameters:
+    level: 'max'
+    paths: [ 'src' ]
+    checkFunctionNameCase: true
+    checkGenericClassInNonGenericObjectType: true
+    reportUnmatchedIgnoredErrors: true
+    parallel:
+        maximumNumberOfProcesses: 4
+
+includes:
+    - 'vendor/phpstan/phpstan-deprecation-rules/rules.neon'
+    - 'vendor/phpstan/phpstan/conf/bleedingEdge.neon'
+
+services:
+    -
+        class: 'PHPStan\Rules\StrictCalls\StrictFunctionCallsRule'
+        tags: [ 'phpstan.rules.rule' ]
+    -
+        class: 'PHPStan\Rules\StrictCalls\DynamicCallOnStaticMethodsRule'
+        tags: [ 'phpstan.rules.rule' ]
+    -
+        class: 'PHPStan\Rules\SwitchConditions\MatchingTypeInSwitchCaseConditionRule'
+        tags: [ 'phpstan.rules.rule' ]
+    -
+        class: 'PHPStan\Rules\Methods\WrongCaseOfInheritedMethodRule'
+        tags: [ 'phpstan.rules.rule' ]

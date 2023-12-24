@@ -1,0 +1,29 @@
+{
+    "name": "zanbaldwin/rust-ffi-loader",
+    "description": "Library to help you load shared library objects over FFI from Rust projects",
+    "keywords": ["rust", "cargo", "ffi", "loader", "shared", "library", "object"],
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "ZanBaldwin\\FFI\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Zan Baldwin",
+            "email": "hello@zanbaldwin.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=8.1",
+        "ext-ffi": "*"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan-deprecation-rules": "^1.1",
+        "phpstan/phpstan-strict-rules": "^1.5",
+        "friendsofphp/php-cs-fixer": "^3.42"
+    }
+}
