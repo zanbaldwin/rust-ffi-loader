@@ -25,10 +25,10 @@ abstract class AbstractLoader
      * @throws \ZanBaldwin\FFI\Exception\UnknownPlatformExtensionException
      * @throws \ZanBaldwin\FFI\Exception\MissingExtensionException
      */
-    final public function __construct(
+    public function __construct(
         string $rustProjectLocation,
-        protected readonly string $crateName,
-        protected readonly bool $debug = false,
+        public readonly string $crateName,
+        public readonly bool $debug = false,
     ) {
         // @phpstan-ignore-next-line Want to make sure that the FFI extension is loaded, and not some user-land class of the same name.
         if (!class_exists(\FFI::class) || !method_exists(\FFI::class, 'cdef')) {
@@ -179,15 +179,5 @@ abstract class AbstractLoader
             };
         }
         throw new Exception\UnknownPlatformExtensionException;
-    }
-
-    public function getCrateName(): string
-    {
-        return $this->crateName;
-    }
-
-    public function getRustProjectLocation(): string
-    {
-        return $this->rustProjectLocation;
     }
 }
