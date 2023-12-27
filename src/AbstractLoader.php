@@ -170,9 +170,6 @@ abstract class AbstractLoader
     /** @throws \ZanBaldwin\FFI\Exception\UnknownPlatformExtensionException */
     protected static function platformExtension(): string
     {
-        if (defined('\PHP_SHLIB_SUFFIX')) {
-            return \PHP_SHLIB_SUFFIX;
-        }
         if (defined('\PHP_OS_FAMILY')) {
             // If you're running a version of PHP built for a different
             // operating system than it's currently running on then you have
@@ -181,7 +178,9 @@ abstract class AbstractLoader
                 'Windows' => 'dll',
                 'Darwin' => 'dylib',
                 'Linux' => self::$musl ? 'a' : 'so',
-                default => throw new Exception\UnknownPlatformExtensionException,
+                default => defined('\PHP_SHLIB_SUFFIX')
+                    ? \PHP_SHLIB_SUFFIX
+                    : new Exception\UnknownPlatformExtensionException,
             };
         }
         throw new Exception\UnknownPlatformExtensionException;
