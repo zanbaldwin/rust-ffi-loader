@@ -4,6 +4,7 @@ namespace ZanBaldwin\FFI;
 
 abstract class AbstractLoader
 {
+    private static bool $musl;
     protected readonly string $rustProjectLocation;
     protected readonly string $sharedLibraryObject;
     protected readonly \FFI $ffi;
@@ -41,6 +42,7 @@ abstract class AbstractLoader
             throw Exception\MissingHeaderFileException::file($this->rustProjectLocation, $this->crateName);
         }
 
+        self::$musl = Util::isAlpine() || Util::hasMusl();
         $this->sharedLibraryObject = $this->guessSharedLibraryLocation();
         $headerDefinition = file_get_contents($libraryHeaderFilepath) ?: throw Exception\MissingHeaderFileException::read(
             $this->rustProjectLocation,
@@ -156,7 +158,11 @@ abstract class AbstractLoader
             // Dynamically-linked shared libraries can't run on Alpine/Musl based
             // systems, so always choose GNU and assume that the system has a
             // GLibC-compatibility layer installed (`apk add gcompat` on Alpine Linux).
-            'Linux' => sprintf('%s-unknown-linux-gnu', $arch),
+            'Linux' => sprintf(
+                '%s-unknown-linux-%s',
+                $arch,
+                self::$musl ? 'musl' : 'gnu',
+            ),
             default => null,
         };
     }
@@ -174,7 +180,7 @@ abstract class AbstractLoader
             return match (\PHP_OS_FAMILY) {
                 'Windows' => 'dll',
                 'Darwin' => 'dylib',
-                'Linux' => 'so',
+                'Linux' => self::$musl ? 'a' : 'so',
                 default => throw new Exception\UnknownPlatformExtensionException,
             };
         }
