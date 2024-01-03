@@ -52,6 +52,9 @@ abstract class AbstractLoader
         try {
             $this->ffi = \FFI::cdef($headerDefinition, $this->sharedLibraryObject);
         } catch (\FFI\Exception $e) {
+            if (str_contains($e->getMessage(), 'ffi.enable')) {
+                throw new Exception\ExtensionDisabledException($this->sharedLibraryObject, $e);
+            }
             throw new Exception\LibraryLoadException($this->sharedLibraryObject, $e);
         }
     }
@@ -180,7 +183,7 @@ abstract class AbstractLoader
                 'Linux' => self::$musl ? 'a' : 'so',
                 default => defined('\PHP_SHLIB_SUFFIX')
                     ? \PHP_SHLIB_SUFFIX
-                    : new Exception\UnknownPlatformExtensionException,
+                    : throw new Exception\UnknownPlatformExtensionException,
             };
         }
         throw new Exception\UnknownPlatformExtensionException;
